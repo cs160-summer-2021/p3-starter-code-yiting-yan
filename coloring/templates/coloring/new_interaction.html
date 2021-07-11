@@ -151,7 +151,7 @@
 				 }
 			 }
 			 // loads subcolors from color palette
-			 function myGetColorsCreatePalette(){
+			 function myGetColorsFromJSON(){
 				 cp.$container.html(" ");
 				 $.getJSON('/static/coloring/vendors/material/material-colors.json', function(colors){
 					 var keys = Object.keys(colors);
@@ -164,7 +164,7 @@
 
 			 function init(custom){
 				 paper.setup(canvas);
-				 myGetColorsCreatePalette();
+				 myGetColorsFromJSON();
 				 paper.project.importSVG(mandala.filePath, function(item) {
 					 mandala.item = item._children["design-freepik"];
 					 paper.project.insertLayer(0,mandala.item);
