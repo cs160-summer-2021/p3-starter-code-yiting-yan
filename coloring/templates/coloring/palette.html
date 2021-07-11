@@ -6,9 +6,11 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   	<title>P3 Coloring</title>
 
+    <link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}" />
+
     <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{% static '/vendors/bootstrap/css/bootstrap.css' %}" />
-
+    
 	<script type="text/javascript" src="{% static 'coloring/vendors/jquery/jquery-3.3.1.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'coloring/vendors/paper/paper-full.min.js' %}"></script>
 
@@ -38,34 +40,6 @@
 		    margin-right: auto;
 		    display: block;
 		}
-
-        #title {
-  			height:10vh;
-			margin: 0%;
-			margin-left: -15px;
-			margin-right: -15px;
-            background-color: red;
-		}
-
-        #palette-area {
-  			height:70vh;
-			margin: 0%;
-			margin-left: -15px;
-			margin-right: -15px;
-            background-color: blue;
-		}
-
-        #next {
-  			height:20vh;
-			margin: 0%;
-			margin-left: -15px;
-			margin-right: -15px;
-            background-color: blueviolet;
-		}
-
-        #single-palette {
-
-        }
 
 	</style>
 
@@ -126,7 +100,7 @@
 					createColorPalette(cp.options);
 				});
 			}
-
+1
 			function init(custom){
 				paper.setup(canvas);
 				getColorsCreatePalette();
@@ -147,21 +121,83 @@
 			// Set up the mandala interactivity.
 			init(true);
 		}
+
+        $(document).ready(() => {
+
+            $('.red').on('click', () => {
+                $('.red').addClass("border")
+            })
+            $('.orange').on('click', () => {
+                $('.orange').addClass("border")
+            })
+            $('.yellow').on('click', () => {
+                $('.yellow').addClass("border")
+            })
+            $('.beige').on('click', () => {
+                $('.beige').addClass("border")
+            })
+            $('.blue').on('click', () => {
+                $('.blue').addClass("border")
+            })
+            $('.purple').on('click', () => {
+                $('.purple').addClass("border")
+            })
+            $('.midnight').on('click', () => {
+                $('.midnight').addClass("border")
+            })
+            $('.green').on('click', () => {
+                $('.green').addClass("border")
+            })
+            $('.black').on('click', () => {
+                $('.black').addClass("border")
+            })
+            $('.pastel').on('click', () => {
+                $('.pastel').addClass("border")
+            })
+            $('.brown').on('click', () => {
+                $('.brown').addClass("border")
+            })
+            $('.grey').on('click', () => {
+                $('.grey').addClass("border")
+            })
+
+        });
 	</script>
 </head>
-<body>
 
-	<!-- <canvas id="myCanvas" width="750px" height="750px"></canvas> -->
-    <div class="container-fluid">
-		<div id="title">
-            <center> <h1>Choose your color palettes</h1></center>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<center><h1>Choose your color palettes</h1></center>
+			</div>
 		</div>
-		<div id="palette-area">
-		</div>
-		<div id="next">
+		<div class="row">
+			<div class="col">
+				<div class="shape-container">			
+					<div class="single-palette red"></div>
+					<div class="single-palette orange"></div>
+					<div class="single-palette yellow"></div>
+					<div class="single-palette beige"></div>
+					<div class="single-palette blue"></div>
+					<div class="single-palette purple"></div>
+					<div class="single-palette midnight"></div>
+					<div class="single-palette green"></div>
+                    <div class="single-palette black"></div>
+                    <div class="single-palette pastel"></div>
+                    <div class="single-palette brown"></div>
+                    <div class="single-palette brown"></div>
+
+                    <!-- next button -->
+                   <a href="demo"><img id="next" src="{% static 'img/next.png' %}" style="max-width: 10%"></a> 
+                   
+                    
+				</div>
+			</div>
 		</div>
 
 	</div>
-	<div id="color-select"></div>
+
 </body>
+
 </html>
