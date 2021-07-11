@@ -5,17 +5,14 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   	<title>P3 Coloring</title>
+      <link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}" />
 
-    <link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}" />
 
-    <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="{% static '/vendors/bootstrap/css/bootstrap.css' %}" />
-    
 	<script type="text/javascript" src="{% static 'coloring/vendors/jquery/jquery-3.3.1.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'coloring/vendors/paper/paper-full.min.js' %}"></script>
 
 	<style type="text/css">
-		#color-select {
+        #color-select {
 			width: 300px;
 			background-color: #f1f1f1;
 			display: flex;
@@ -23,73 +20,110 @@
 			position: absolute;
 			top: 0;
 		}
-
-		.swatch {
-			width: 24px;
-			height: 24px;
-			-moz-border-radius: 12px;
-			-webkit-border-radius: 12px;
-			border-radius: 12px;
-			margin: 3px;
+		#color-palette {
+            padding-top: 10rem;
+            padding-left: 5rem;
+			width: 800px;
+            height: 500px;
+			display: flex;
+			flex-wrap: wrap;
+			position: absolute;
+			top: 0;
 		}
 
-		#myCanvas {
-			padding-left: 0;
-		    padding-right: 0;
-		    margin-left: auto;
-		    margin-right: auto;
-		    display: block;
+		.swatch {
+            width: 80px;
+			 height: 80px;
+			 -moz-border-radius: 40px;
+			 -webkit-border-radius: 40px;
+			 border-radius: 40px;
+			 margin: 30px;
 		}
 
 	</style>
 
 	<script type="text/javascript" canvas="canvas">
-        $(document).ready(() => {
-            
-            // add border when clicking on color palettes. 
-            $('.red').on('click', () => {
-                $('.red').addClass("border")
-            })
-            $('.orange').on('click', () => {
-                $('.orange').addClass("border")
-            })
-            $('.yellow').on('click', () => {
-                $('.yellow').addClass("border")
-            })
-            $('.beige').on('click', () => {
-                $('.beige').addClass("border")
-            })
-            $('.blue').on('click', () => {
-                $('.blue').addClass("border")
-            })
-            $('.purple').on('click', () => {
-                $('.purple').addClass("border")
-            })
-            $('.midnight').on('click', () => {
-                $('.midnight').addClass("border")
-            })
-            $('.green').on('click', () => {
-                $('.green').addClass("border")
-            })
-            $('.black').on('click', () => {
-                $('.black').addClass("border")
-            })
-            $('.pastel').on('click', () => {
-                $('.pastel').addClass("border")
-            })
-            $('.brown').on('click', () => {
-                $('.brown').addClass("border")
-            })
-            $('.grey').on('click', () => {
-                $('.grey').addClass("border")
-            })
+		window.onload = function() {
+			var canvas = document.getElementById('myCanvas');
 
-        });
+			// coloring page
+			var mandala = {
+				item: null,
+				lastClicked: null,
+				filePath: '/static/coloring/images/mandala-freepik.svg'
+			};
+
+			// color palette
+			var cp = {
+				history: ["#000000"], // black selected by default
+				options: [],
+				$container: $('#color-palette')
+			}
+
+			function myCustomInteraction() {
+				var tool = new paper.Tool();
+
+				tool.onMouseDown = function (event) {
+				    var hit = mandala.item.hitTest(event.point, { tolerance: 10, fill: true });
+				    if (hit) {
+				    		// Color pallette keeps track of the full history of colors, though we
+				    		// only color in with the most-recent color.
+				        hit.item.fillColor = cp.history[cp.history.length - 1];
+				    }
+				}
+			}
+
+			// create a color palette with the given colors
+			function createColorPalette(colors){
+
+				// create a swatch for each color
+				for (var i = colors.length - 1; i >= 0; i--) {
+					var $swatch = $("<div>").css("background-color", colors[i])
+									   .addClass("swatch");
+					$swatch.click(function(){
+						// add color to the color palette history
+					  	cp.history.push($(this).css("background-color"));
+					});
+					cp.$container.append($swatch);
+				}
+			}
+
+			// loads a set of colors from a json to create a color palette
+			function getColorsCreatePalette(){
+				cp.$container.html(" ");
+				$.getJSON('/static/coloring/vendors/material/material-colors.json', function(colors){
+					var keys = Object.keys(colors);
+					for (var i = keys.length - 1; i >= 0; i--) {
+						cp.options.push(colors[keys[i]][500]);
+					}
+					createColorPalette(cp.options);
+				});
+			}
+
+			function init(custom){
+				paper.setup(canvas);
+				getColorsCreatePalette();
+
+				paper.project.importSVG(mandala.filePath, function(item) {
+					mandala.item = item._children["design-freepik"];
+				    paper.project.insertLayer(0,mandala.item);
+
+				    if (custom) {
+				    	myCustomInteraction();
+				    } else {
+				    	myGradientInteraction();
+				    }
+
+				});
+			}
+
+			// Set up the mandala interactivity.
+			init(true);
+		}
 	</script>
 </head>
-
 <body>
-	<div class="container">
+    <div class="container">
 		<div class="row">
 			<div class="col">
 				<center><h1>Choose your color palettes</h1></center>
@@ -99,20 +133,11 @@
 			<div class="col">
 				<div class="shape-container">
                     <!--color palettes mock up  -->
-					<div class="single-palette red"></div>
-					<div class="single-palette orange"></div>
-					<div class="single-palette yellow"></div>
-					<div class="single-palette beige"></div>
-					<div class="single-palette blue"></div>
-					<div class="single-palette purple"></div>
-					<div class="single-palette midnight"></div>
-					<div class="single-palette green"></div>
-                    <div class="single-palette black"></div>
-                    <div class="single-palette pastel"></div>
-                    <div class="single-palette brown"></div>
-                    <div class="single-palette brown"></div>
+                    <div id="color-palette"></div>
 
                     <!-- next button -->
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> <br><br><br><br><br><br><br><br><br><br><br><br><br>
+
                    <a href="demo"><img id="next" src="{% static 'img/next.png' %}" style="max-width: 10%"></a> 
                    
                     
@@ -121,7 +146,5 @@
 		</div>
 
 	</div>
-
 </body>
-
 </html>

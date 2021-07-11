@@ -97,31 +97,31 @@
 			 }
 
 			 // create a color palette with the given colors
-			 function createColorPalette(colors){
+			//  function createColorPalette(colors){
 
-				 // create a swatch for each color
-				 for (var i = colors.length - 1; i >= 0; i--) {
-					 var $swatch = $("<div>").css("background-color", colors[i])
-											 .addClass("swatch");
-					 $swatch.click(function(){
-						 // add color to the color palette history
-						 cp.history.push($(this).css("background-color"));
-					 });
-					 cp.$container.append($swatch);
-				 }
-			 }
+			// 	 // create a swatch for each color
+			// 	 for (var i = colors.length - 1; i >= 0; i--) {
+			// 		 var $swatch = $("<div>").css("background-color", colors[i])
+			// 								 .addClass("swatch");
+			// 		 $swatch.click(function(){
+			// 			 // add color to the color palette history
+			// 			 cp.history.push($(this).css("background-color"));
+			// 		 });
+			// 		 cp.$container.append($swatch);
+			// 	 }
+			//  }
 
 			 // loads a set of colors from a json to create a color palette
-			 function getColorsCreatePalette(){
-				 cp.$container.html(" ");
-				 $.getJSON('/static/coloring/vendors/material/material-colors.json', function(colors){
-					 var keys = Object.keys(colors);
-					 for (var i = keys.length - 1; i >= 0; i--) {
-						 cp.options.push(colors[keys[i]][500]);
-					 }
-					 createColorPalette(cp.options);
-				 });
-			 }
+			//  function getColorsCreatePalette(){
+			// 	 cp.$container.html(" ");
+			// 	 $.getJSON('/static/coloring/vendors/material/material-colors.json', function(colors){
+			// 		 var keys = Object.keys(colors);
+			// 		 for (var i = keys.length - 1; i >= 0; i--) {
+			// 			 cp.options.push(colors[keys[i]][500]);
+			// 		 }
+			// 		 createColorPalette(cp.options);
+			// 	 });
+			//  }
 
 			 // Create the main color palette circles
 			 function myCreateMainPalette(colors){
@@ -184,7 +184,6 @@
 		</script>
 	</head>
 	<body>
-
 		<canvas id="myCanvas" width="750px" height="750px"></canvas>
 		<div id="color-palette"></div>
 		<div id="sub-color-palette"></div>
