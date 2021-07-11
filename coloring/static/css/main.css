@@ -18,67 +18,9 @@
 body {
   background-image: url("/static/img/chooser-bg.jpg");
 }
+
 .border {
-  border: 3px solid #ccc;
-}
-
-.blue {
-  background-color: #118ab2;
-}
-
-.beige {
-  background-color: #f2cc8f;
-}
-
-.green {
-  background-color: #80b918;
-}
-
-.red {
-  background-color: #ef476f;
-}
-
-.seablue {
-  background-color: #06d6a0;
-}
-
-.yellow {
-  background-color: #ffbe0b;
-}
-
-.purple {
-  background-color: #e1bee7;
-}
-
-.orange {
-  background-color: #f78c6b;
-}
-
-.midnight {
-  background-color: #073b4c;
-}
-
-.purple {
-  background-color: #8338ec;
-}
-
-.black {
-  background-color: #212121;
-}
-
-.pastel {
-  background-color: #6a5d7b;
-}
-
-.brown {
-  background-color: #837569;
-}
-
-.brown2 {
-  background-color: red;
-}
-.dark {
-  background-color: blue;
+  border: 3px solid black;
 }
 
 .float-right {
