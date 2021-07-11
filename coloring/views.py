@@ -5,3 +5,5 @@ def index(request):
 
 def palette(request):
     return render(request, 'coloring/palette.html')
+def new_interaction(request):
+    return render(request, 'coloring/new_interaction.html')
