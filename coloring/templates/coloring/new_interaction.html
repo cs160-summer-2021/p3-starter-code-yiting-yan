@@ -74,7 +74,8 @@
 			 // 			}
 
 			 // options stores the main colors
-			 // subcolors stores a dictionary containing subcolors as values
+			 // subcolors is a dictionary, the keys are main colors like red, blue, etc.
+			 // the values are lists of subcolors for that colors
 			 var cp = {
 				 history: ["#000000"], // black selected by default
 				 options: ["red", "green", "purple"],
@@ -125,7 +126,7 @@
 			 // Create the main color palette circles
 			 function myCreateMainPalette(colors){
 				 for (const c of colors) {
-					 var $swatch = $("<div>").css("background-color", cp.subcolors[c][500])
+					 var $swatch = $("<div>").css("background-color", cp.subcolors[c][5])
 											 .addClass("swatch");
 					 $swatch.click(function(){
 						 // add color to the color palette history
@@ -139,8 +140,8 @@
 			 // Create the sub color palette circles
 			 function myCreateSubPalette(color){
 				 cp.$subContainer.html(" ");
-				 for (const s of Object.keys(cp.subcolors[color])) {
-					 var $swatch = $("<div>").css("background-color", cp.subcolors[color][s])
+				 for (const s of cp.subcolors[color]) {
+					 var $swatch = $("<div>").css("background-color", s)
 											 .addClass("sub-swatch");
 					 $swatch.click(function(){
 						 // add color to the color palette history
@@ -155,7 +156,7 @@
 				 $.getJSON('/static/coloring/vendors/material/material-colors.json', function(colors){
 					 var keys = Object.keys(colors);
 					 for (const c of cp.options) {
-						 cp.subcolors[c] = colors[c];
+						 cp.subcolors[c] = Object.values(colors[c]);
 					 }
 					 myCreateMainPalette(cp.options);
 				 });
