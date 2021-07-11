@@ -7,7 +7,8 @@
   	<title>P3 Coloring</title>
       <link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}" />
 
-
+	  <!-- credit to https://github.com/js-cookie/js-cookie for the js cookie api for handling cookies -->
+	<script type="text/javascript" src="{% static 'coloring/vendors/jquery/js.cookie.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'coloring/vendors/jquery/jquery-3.3.1.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'coloring/vendors/paper/paper-full.min.js' %}"></script>
 
@@ -58,7 +59,8 @@
 				history: ["#000000"], // black selected by default
 				options: [],
 				$container: $('#color-palette')
-			}
+			};
+			var userPalettes = [];
 
 			function myCustomInteraction() {
 				var tool = new paper.Tool();
@@ -79,11 +81,20 @@
 				// create a swatch for each color
 				for (var i = colors.length - 1; i >= 0; i--) {
 					var $swatch = $("<div>").css("background-color", colors[i])
-									   .addClass("swatch");
+											.addClass("swatch");
 					$swatch.click(function(){
 						// add color to the color palette history
-					  	cp.history.push($(this).css("background-color"));
-						$(this).addClass("border")
+						let thisColor = $(this).css("background-color");
+						cp.history.push(thisColor);
+						$(this).toggleClass("border");
+						// add color if not chosen; remove if already chosen
+						if (userPalettes.indexOf(thisColor) == -1) {
+							userPalettes.push(thisColor);
+						} else {
+							userPalettes.splice(userPalettes.indexOf(thisColor), 1);
+						}
+						Cookies.set('userPalettes', userPalettes, { SameSite: 'Lax' });
+						// console.log(Cookies.get('userPalettes'));
 					});
 					cp.$container.append($swatch);
 				}
