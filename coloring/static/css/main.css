@@ -1,0 +1,121 @@
+/* Some borrowed from proj2 */
+.shape-container {
+  padding-left: 19em;
+  width: 55em;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.single-palette {
+  margin: 50px;
+  min-width: 100px;
+  min-height: 100px;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+}
+
+body {
+  background-image: url("/static/img/chooser-bg.jpg");
+}
+.border {
+  border: 3px solid #ccc;
+}
+
+.blue {
+  background-color: #118ab2;
+}
+
+.beige {
+  background-color: #f2cc8f;
+}
+
+.green {
+  background-color: #80b918;
+}
+
+.red {
+  background-color: #ef476f;
+}
+
+.seablue {
+  background-color: #06d6a0;
+}
+
+.yellow {
+  background-color: #ffbe0b;
+}
+
+.purple {
+  background-color: #e1bee7;
+}
+
+.orange {
+  background-color: #f78c6b;
+}
+
+.midnight {
+  background-color: #073b4c;
+}
+
+.purple {
+  background-color: #8338ec;
+}
+
+.black {
+  background-color: #212121;
+}
+
+.pastel {
+  background-color: #6a5d7b;
+}
+
+.brown {
+  background-color: #837569;
+}
+
+.brown2 {
+  background-color: red;
+}
+.dark {
+  background-color: blue;
+}
+
+.float-right {
+  float: right;
+}
+
+body {
+  padding-top: 0.5rem;
+  padding-bottom: 2rem;
+  font-family: "Fira Sans", sans-serif;
+  color: #0d124a;
+  background-color: #fafafa;
+}
+
+b,
+strong {
+  color: #0d124a;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-bottom: 1rem;
+  font-family: "Fira Sans";
+  line-height: 1.6em;
+  font-weight: 600;
+  color: #0d124a;
+}
+
+h1,
+.h1 {
+  font-size: 2.5rem;
+}
+
+#next {
+  padding-left: 55rem;
+}
