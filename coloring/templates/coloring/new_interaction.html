@@ -15,42 +15,78 @@
          #grid {
              display: flex;
              justify-content: center;
+             background-color: #AAAAAA !important;
          }
 		 #color-palette {
-			 background-color: #f1f1f1;
+			 background-color: transparent;
 			 display: flex;
 			 flex-wrap: wrap;
 			 position: absolute;
-			 top: 0;
+			 top: -4px;
 			 /* left: calc(50% - 200px); */
 		 }
 
 		 #sub-color-palette {
 			 /* min-width: 500px; */
-			 background-color: #f1f1f1;
+			 background-color: transparent;
 			 display: flex;
 			 flex-wrap: wrap;
 			 position: absolute;
-			 top: 56px;
+			 top: 59.5px;
 			 /* left: calc(50% - 200px); */
 		 }
 		 .swatch {
-			 width: 50px;
-			 height: 50px;
+			 width: 45px;
+			 height: 45px;
 			 -moz-border-radius: 25px;
 			 -webkit-border-radius: 25px;
 			 border-radius: 25px;
-			 margin: 3px;
+			 margin: 10px;
 		 }
-
+         .selected-color::after {
+             position: absolute;
+             content: " ";
+             width: 60px;
+             height: 60px;
+             margin-top: -7.5px;
+             margin-left: -7.5px;
+             background: #E1E1E1;
+             z-index: -1;
+             border-radius: 5px;
+         }
 		 .sub-swatch {
 			 width: 30px;
 			 height: 30px;
 			 -moz-border-radius: 25px;
 			 -webkit-border-radius: 25px;
 			 border-radius: 25px;
-			 margin: 3px;
+			 margin: 5px;
 		 }
+         .selected-subcolor::after {
+             position: absolute;
+             content: " ";
+             width: 40px;
+             height: 40px;
+             margin-top: -5px;
+             margin-left: -5px;
+             background: #E1E1E1;
+             z-index: -1;
+             border-radius: 5px;
+         }
+         .selected-button {
+             background: lightgrey;
+             border-radius: 9px;
+         }
+         .feature-button {
+             width: 30px;
+             padding: 5px;
+         }
+         #side {
+             position: fixed;
+             width: 50px;
+             left: 10px;
+             top: 100px;
+         }
 		 .tool{
 			image-orientation: flip;
 		 }
@@ -61,7 +97,7 @@
 			 margin-left: auto;
 			 margin-right: auto;
 			 display: block;
-		
+             margin-top: 120px;
 		 }
 
 		.eraser-select{
@@ -117,6 +153,13 @@
 				 $container: $('#color-palette'),
 				 $subContainer: $('#sub-color-palette')
 			 }
+
+             // modes:
+             // color (default): colors in region
+             // picker: changes current color to the color of a region, and goes back to color mode
+             //
+             var mode = "color";
+
              // read cookie data to get colors
              // cp.options = Cookies.get('userPalettes').concat(",").split("),");
              // for (var i = 0; i < cp.options.length - 1; i++) {
@@ -139,14 +182,17 @@
 					 if (hit) {
 						 // Color pallette keeps track of the full history of colors, though we
 						 // only color in with the most-recent color.
-						var eraserSelected = $('#eraser').hasClass("eraser-select");
-						if (eraserSelected) {
-							//if user selected eraser, color everything white. 
-							hit.item.fillColor = "#FFFFFF"
-						} else {
-							 hit.item.fillColor = cp.history[cp.history.length - 1];
-
-						}
+                         var eraserSelected = $('#eraser').hasClass("eraser-select");
+                         if (mode == "color") {
+						     hit.item.fillColor = cp.history[cp.history.length - 1];
+                         } else if (mode == "picker") {
+                             cp.history.push(hit.item.fillColor);
+                             console.log(hit.item.fillColor);
+                             mode = "color";
+                             $("#color-picker").removeClass("selected-button");
+                         } else if (eraserSelected) {
+							hit.item.fillColor = "#FFFFFF";
+                         }
 					 }
 				 }
 
@@ -188,6 +234,8 @@
 						 // add color to the color palette history
 						 $(this).addClass("background-color");
 						 cp.history.push($(this).css("background-color"));
+                         $(".swatch").removeClass("selected-color");
+                         $(this).addClass("selected-color");
 						 // Create the sub color palette circles
 						 myCreateSubPalette(c);
 						 
@@ -204,6 +252,8 @@
 					 $swatch.click(function(){
 						 // add color to the color palette history
 						 cp.history.push($(this).css("background-color"));
+                         $(".sub-swatch").removeClass("selected-subcolor");
+                         $(this).addClass("selected-subcolor");
 					 });
 					 cp.$subContainer.append($swatch);
 				 }
@@ -238,6 +288,15 @@
 
 
 		
+             $("#color-picker").click(function () {
+                 if (mode == "picker") {
+                     mode == "color";
+                 } else {
+                     mode = "picker";
+                 }
+                 $(this).toggleClass("selected-button");
+             });
+
 			 function init(custom){
 
 		
@@ -265,11 +324,16 @@
 	</head>
 	<body>
 		<br>
-		<img id = "eraser" src="{% static 'img/eraser.png' %}" style="inline-size: 5%;" alt="">
 		<canvas id="myCanvas" width="750px" height="750px"></canvas>
         <div id="grid">
 		<div id="color-palette"></div>
 		<div id="sub-color-palette"></div>
 		<!-- <button id="brush">brush</button> -->
 	</body>
+        </div>
+        <div id="side">
+            <img id = "eraser" src="{% static 'img/eraser.png' %}" style="inline-size: 5%;" alt="">
+            <img id="color-picker" class="feature-button" src="{% static 'img/color-picker.svg' %}">
+        </div>
+    </body>
 </html>
