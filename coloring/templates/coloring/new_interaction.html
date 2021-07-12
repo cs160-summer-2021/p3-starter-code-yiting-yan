@@ -191,6 +191,7 @@
 						 // only color in with the most-recent color.
                          // var eraserSelected = $('#eraser').hasClass("eraser-select");
                          var eraserSelected = $('#eraser').hasClass("selected-button");
+						 var brushSelected = $('#brush').hasClass("selected-button");
                          if (mode == "color") {
 						     hit.item.fillColor = cp.history[cp.history.length - 1];
                          } else if (mode == "picker") {
@@ -200,7 +201,12 @@
                              $("#color-picker").removeClass("selected-button");
                          } else if (eraserSelected) {
 							hit.item.fillColor = "#FFFFFF";
-                         }
+                         } else if (brushSelected) {
+							 cp.history.push(hit.item.fillColor);
+                             console.log(hit.item.fillColor);
+                             mode = "color";
+                             $("#color-picker").removeClass("selected-button");
+						 }
 					 }
 				 }
 
@@ -282,20 +288,25 @@
 			 }
 
 			// building paint brush, not yet finished
-			//  $('#brush').on('click', () => {
-			//  $(document).mousedown(function(e) {
-			// 	// $('#canvas').css({
-			// 	// 	top: e.pageY - 25,
-			// 	// 	left: e.pageX - 25,
-			// 	// });
-			// 	var newdot = $('<div>').addClass('dot').css({
-        	// 	top: e.pageY,
-        	// 	left: e.pageX
-     		// 	});
-			// 	$('body').append(newdot);
-           	// })
+			 $('#brush').on('click', () => {
+				$('#brush').toggleClass("selected-button");
 
-    		// }); 
+				 if ($('#brush').hasClass("selected-button")) {
+					$(document).mousedrag(function(e) {
+					// $('#canvas').css({
+					// top: e.pageY - 100,
+					// left: e.pageX - 25,
+					// });
+					var newdot = $('<div>').addClass('dot').css({
+        			top: e.pageY,
+        			left: e.pageX
+     				});
+					$('body').append(newdot);
+           		})
+				 } 
+			
+
+    		}); 
 
 
 		
@@ -339,12 +350,12 @@
         <div id="grid">
 		<div id="color-palette"></div>
 		<div id="sub-color-palette"></div>
-		<!-- <button id="brush">brush</button> -->
 	</body>
         </div>
         <div id="side">
             <img id = "eraser" src="{% static 'img/eraser.png' %}" class="feature-button" alt="">
             <img id="color-picker" class="feature-button" src="{% static 'img/color-picker.svg' %}">
+			<img id="brush" class="feature-button" src="{% static 'img/brush.png' %}">
         </div>
     </body>
 </html>
