@@ -62,8 +62,11 @@
 			 margin-right: auto;
 			 display: block;
 		
-		
 		 }
+
+		.eraser-select{
+			background-color: grey;
+		}
 		</style>
 
 		<script type="text/javascript" canvas="canvas">
@@ -106,12 +109,24 @@
 			 function myCustomInteraction() {
 				 var tool = new paper.Tool();
 
+				 $('#eraser').on('click', () => {
+               			 $('#eraser').toggleClass("eraser-select")
+           		 })
+
 				 tool.onMouseDown = function (event) {
 					 var hit = mandala.item.hitTest(event.point, { tolerance: 10, fill: true });
 					 if (hit) {
 						 // Color pallette keeps track of the full history of colors, though we
 						 // only color in with the most-recent color.
-						 hit.item.fillColor = cp.history[cp.history.length - 1];
+		
+						var eraserSelected = $('#eraser').hasClass("eraser-select");
+						if (eraserSelected) {
+							//if user selected eraser, color everything white. 
+							hit.item.fillColor = "#FFFFFF"
+						} else {
+							 hit.item.fillColor = cp.history[cp.history.length - 1];
+
+						}
 					 }
 				 }
 			 }
@@ -204,13 +219,11 @@
 		</script>
 	</head>
 	<body>
-		<br><br><br><br><br>
-		<img src="{% static 'img/eraser.png' %}" style="inline-size: 5%;" alt="">
-		<img src="{% static 'img/zoom.png' %}" style="inline-size: 5%;" alt="">
+		<br>
+		<img id = "eraser" src="{% static 'img/eraser.png' %}" style="inline-size: 5%;" alt="">
 		<canvas id="myCanvas" width="750px" height="750px"></canvas>
         <div id="grid">
 		<div id="color-palette"></div>
 		<div id="sub-color-palette"></div>
-        </div>
 	</body>
 </html>
