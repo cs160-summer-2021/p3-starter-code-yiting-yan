@@ -183,7 +183,23 @@
                      }
            		 })
 
-				
+                 var aPath;
+                 function onMouseDown(e) {
+                     aPath = new Path();
+                     aPath.strokeColor = '#000';
+                 }
+                 tool.onMouseDrag = function (e) {
+                     if ($('#brush').hasClass("selected-button")) {
+                         // var newdot = $('<div>').addClass('dot').css({
+                         //     top: e.pageY,
+                         //     left: e.pageX,
+                         // });
+                         // $('body').append(newdot);
+                         var myCircle = new paper.Path.Circle({center: e.middlePoint, radius: 10});
+                         myCircle.fillColor = cp.history[cp.history.length - 1];
+                         myCircle.strokeColor = cp.history[cp.history.length - 1];
+				     }
+                 }
 				 tool.onMouseDown = function (event) {
 					 var hit = mandala.item.hitTest(event.point, { tolerance: 10, fill: true });
 					 if (hit) {
@@ -202,10 +218,10 @@
                          } else if (eraserSelected) {
 							hit.item.fillColor = "#FFFFFF";
                          } else if (brushSelected) {
-							 cp.history.push(hit.item.fillColor);
-                             console.log(hit.item.fillColor);
-                             mode = "color";
-                             $("#color-picker").removeClass("selected-button");
+							 // cp.history.push(hit.item.fillColor);
+                             // console.log(hit.item.fillColor);
+                             // mode = "color";
+                             // $("#color-picker").removeClass("selected-button");
 						 }
 					 }
 				 }
@@ -289,21 +305,22 @@
 
 			// building paint brush, not yet finished
 			 $('#brush').on('click', () => {
-				$('#brush').toggleClass("selected-button");
+				 $('#brush').toggleClass("selected-button");
+                 mode = "brush";
 
-				 if ($('#brush').hasClass("selected-button")) {
-					$(document).mousedown(function(e) {
-					// $('#canvas').css({
-					// top: e.pageY - 100,
-					// left: e.pageX - 25,
-					// });
-					var newdot = $('<div>').addClass('dot').css({
-        			top: e.pageY,
-        			left: e.pageX
-     				});
-					$('body').append(newdot);
-           		})
-				 } 
+				 // if ($('#brush').hasClass("selected-button")) {
+                 // 					$(document).mousedown(function(e) {
+                 // 					// $('#canvas').css({
+                 // 					// top: e.pageY - 100,
+                 // 					// left: e.pageX - 25,
+                 // 					// });
+                 // 					var newdot = $('<div>').addClass('dot').css({
+                 //         			top: e.pageY,
+                 //         			left: e.pageX
+                 //      				});
+                 // 					$('body').append(newdot);
+                 //            		})
+                 // 				 }
 			
 
     		}); 
