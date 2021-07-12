@@ -2,47 +2,47 @@
 
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>P3 Coloring</title>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>P3 Coloring</title>
 
-	  <!-- credit to https://github.com/js-cookie/js-cookie for the js cookie api for handling cookies -->
-	<script type="text/javascript" src="{% static 'coloring/vendors/jquery/js.cookie.min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'coloring/vendors/jquery/jquery-3.3.1.min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'coloring/vendors/paper/paper-full.min.js' %}"></script>
+        <!-- credit to https://github.com/js-cookie/js-cookie for the js cookie api for handling cookies -->
+        <script type="text/javascript" src="{% static 'coloring/vendors/jquery/js.cookie.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'coloring/vendors/jquery/jquery-3.3.1.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'coloring/vendors/paper/paper-full.min.js' %}"></script>
 
-		<style type="text/css">
+        <style type="text/css">
          #grid {
              display: flex;
              justify-content: center;
              background-color: #AAAAAA !important;
          }
-		 #color-palette {
-			 background-color: transparent;
-			 display: flex;
-			 flex-wrap: wrap;
-			 position: absolute;
-			 top: -4px;
-			 /* left: calc(50% - 200px); */
-		 }
+         #color-palette {
+             background-color: transparent;
+             display: flex;
+             flex-wrap: wrap;
+             position: absolute;
+             top: -4px;
+             /* left: calc(50% - 200px); */
+         }
 
-		 #sub-color-palette {
-			 /* min-width: 500px; */
-			 background-color: transparent;
-			 display: flex;
-			 flex-wrap: wrap;
-			 position: absolute;
-			 top: 59.5px;
-			 /* left: calc(50% - 200px); */
-		 }
-		 .swatch {
-			 width: 45px;
-			 height: 45px;
-			 -moz-border-radius: 25px;
-			 -webkit-border-radius: 25px;
-			 border-radius: 25px;
-			 margin: 10px;
-		 }
+         #sub-color-palette {
+             /* min-width: 500px; */
+             background-color: transparent;
+             display: flex;
+             flex-wrap: wrap;
+             position: absolute;
+             top: 59.5px;
+             /* left: calc(50% - 200px); */
+         }
+         .swatch {
+             width: 45px;
+             height: 45px;
+             -moz-border-radius: 25px;
+             -webkit-border-radius: 25px;
+             border-radius: 25px;
+             margin: 10px;
+         }
          .selected-color::after {
              position: absolute;
              content: " ";
@@ -54,14 +54,14 @@
              z-index: -1;
              border-radius: 5px;
          }
-		 .sub-swatch {
-			 width: 30px;
-			 height: 30px;
-			 -moz-border-radius: 25px;
-			 -webkit-border-radius: 25px;
-			 border-radius: 25px;
-			 margin: 5px;
-		 }
+         .sub-swatch {
+             width: 30px;
+             height: 30px;
+             -moz-border-radius: 25px;
+             -webkit-border-radius: 25px;
+             border-radius: 25px;
+             margin: 5px;
+         }
          .selected-subcolor::after {
              position: absolute;
              content: " ";
@@ -74,7 +74,11 @@
              border-radius: 5px;
          }
          .selected-button {
-             background: lightgrey;
+             background: lightgrey !important;
+             border-radius: 9px;
+         }
+         .feature-button:hover {
+             background: #E9E9E9;
              border-radius: 9px;
          }
          .feature-button {
@@ -87,25 +91,25 @@
              left: 10px;
              top: 100px;
          }
-		 .tool{
-			image-orientation: flip;
-		 }
+         .tool{
+             image-orientation: flip;
+         }
 
-		 #myCanvas {
-			 padding-left: 0;
-			 padding-right: 0;
-			 margin-left: auto;
-			 margin-right: auto;
-			 display: block;
+         #myCanvas {
+             padding-left: 0;
+             padding-right: 0;
+             margin-left: auto;
+             margin-right: auto;
+             display: block;
              margin-top: 120px;
-		 }
+         }
 
-		.eraser-select{
-			background: lightgray;
-			border-radius: 9px;
-		}
+         .eraser-select{
+             background: lightgray;
+             border-radius: 9px;
+         }
 
-		/* .box {
+         /* .box {
             width: 50px;
             height: 50px;
             background-color: red;
@@ -114,47 +118,47 @@
             left: 100px;
             border-radius: 25px;
             border: solid 3px #ccc;
-        } */
-        .dot {
-            width: 10px;
-            height: 10px;
-            background-color: red;
-            position: absolute;
-            border-radius: 5px;
-            
-        }
+            } */
+         .dot {
+             width: 10px;
+             height: 10px;
+             background-color: red;
+             position: absolute;
+             border-radius: 5px;
 
-		</style>
+         }
 
-		<script type="text/javascript" canvas="canvas">
-		 window.onload = function() {
-			 var canvas = document.getElementById('myCanvas');
+        </style>
 
-			 // coloring page
-			 var mandala = {
-				 item: null,
-				 lastClicked: null,
-				 filePath: '/static/coloring/images/mandala-freepik.svg'
-			 };
+        <script type="text/javascript" canvas="canvas">
+         window.onload = function() {
+             var canvas = document.getElementById('myCanvas');
 
-			 // color palette
-			 // var cp = {
-			 // 				history: ["#000000"], // black selected by default
-			 // 				options: [],
-			 // 				$container: $('#color-palette')
-			 // 			}
+             // coloring page
+             var mandala = {
+                 item: null,
+                 lastClicked: null,
+                 filePath: '/static/coloring/images/mandala-freepik.svg'
+             };
 
-			 // options stores the main colors
-			 // subcolors is a dictionary, the keys are main colors like red, blue, etc.
-			 // the values are lists of subcolors for that colors
-			 var cp = {
-				 history: ["#000000"], // black selected by default
-				 options: ["red", "green", "purple"],
-				 subcolors: {},
-				 $container: $('#color-palette'),
-				 $subContainer: $('#sub-color-palette')
-			 }
+             // color palette
+             // var cp = {
+             // 				history: ["#000000"], // black selected by default
+             // 				options: [],
+             // 				$container: $('#color-palette')
+             // 			}
 
+             // options stores the main colors
+             // subcolors is a dictionary, the keys are main colors like red, blue, etc.
+             // the values are lists of subcolors for that colors
+             var cp = {
+                 history: ["#000000"], // black selected by default
+                 colorHistory: ["#000000"], // black selected by default
+                 options: ["red", "green", "purple"],
+                 subcolors: {},
+                 $container: $('#color-palette'),
+                 $subContainer: $('#sub-color-palette')
+             }
              // modes:
              // color (default): colors in region
              // picker: changes current color to the color of a region, and goes back to color mode
@@ -170,18 +174,17 @@
              // console.log(cp.options);
              cp.options = Cookies.get('userPalettes').split(",");
              console.log(cp.options);
-			 function myCustomInteraction() {
-				 var tool = new paper.Tool();
+             function myCustomInteraction() {
+                 var tool = new paper.Tool();
 
-				 $('#eraser').on('click', () => {
-               	 // $('#eraser').toggleClass("eraser-select")
-               	 $('#eraser').toggleClass("selected-button");
+                 $('#eraser').on('click', () => {
+                     // $('#eraser').toggleClass("eraser-select")
                      if (mode == "eraser") {
                          mode = "color";
                      } else {
                          mode = "eraser";
                      }
-           		 })
+                 })
 
                  var aPath;
                  function onMouseDown(e) {
@@ -198,117 +201,120 @@
                          var myCircle = new paper.Path.Circle({center: e.middlePoint, radius: 10});
                          myCircle.fillColor = cp.history[cp.history.length - 1];
                          myCircle.strokeColor = cp.history[cp.history.length - 1];
-				     }
+                     }
                  }
-				 tool.onMouseDown = function (event) {
-					 var hit = mandala.item.hitTest(event.point, { tolerance: 10, fill: true });
-					 if (hit) {
-						 // Color pallette keeps track of the full history of colors, though we
-						 // only color in with the most-recent color.
+                 tool.onMouseDown = function (event) {
+                     var hit = mandala.item.hitTest(event.point, { tolerance: 10, fill: true });
+                     if (hit) {
+                         // Color pallette keeps track of the full history of colors, though we
+                         // only color in with the most-recent color.
                          // var eraserSelected = $('#eraser').hasClass("eraser-select");
                          var eraserSelected = $('#eraser').hasClass("selected-button");
-						 var brushSelected = $('#brush').hasClass("selected-button");
+                         var brushSelected = $('#brush').hasClass("selected-button");
                          if (mode == "color") {
-						     hit.item.fillColor = cp.history[cp.history.length - 1];
+                             hit.item.fillColor = cp.history[cp.history.length - 1];
+                             if (cp.colorHistory[cp.colorHistory.length-1] != cp.history[cp.history.length-1]) {
+                                 cp.colorHistory.push(cp.history[cp.history.length - 1]);
+                             }
+                             console.log(cp.colorHistory);
                          } else if (mode == "picker") {
                              cp.history.push(hit.item.fillColor);
                              console.log(hit.item.fillColor);
                              mode = "color";
                              $("#color-picker").removeClass("selected-button");
                          } else if (eraserSelected) {
-							hit.item.fillColor = "#FFFFFF";
+                             hit.item.fillColor = "#FFFFFF";
                          } else if (brushSelected) {
-							 // cp.history.push(hit.item.fillColor);
+                             // cp.history.push(hit.item.fillColor);
                              // console.log(hit.item.fillColor);
                              // mode = "color";
                              // $("#color-picker").removeClass("selected-button");
-						 }
-					 }
-				 }
+                         }
+                     }
+                 }
 
-			 }
+             }
 
-			 // create a color palette with the given colors
-			//  function createColorPalette(colors){
+             // create a color palette with the given colors
+             //  function createColorPalette(colors){
 
-			// 	 // create a swatch for each color
-			// 	 for (var i = colors.length - 1; i >= 0; i--) {
-			// 		 var $swatch = $("<div>").css("background-color", colors[i])
-			// 								 .addClass("swatch");
-			// 		 $swatch.click(function(){
-			// 			 // add color to the color palette history
-			// 			 cp.history.push($(this).css("background-color"));
-			// 		 });
-			// 		 cp.$container.append($swatch);
-			// 	 }
-			//  }
+             // 	 // create a swatch for each color
+             // 	 for (var i = colors.length - 1; i >= 0; i--) {
+             // 		 var $swatch = $("<div>").css("background-color", colors[i])
+             // 								 .addClass("swatch");
+             // 		 $swatch.click(function(){
+             // 			 // add color to the color palette history
+             // 			 cp.history.push($(this).css("background-color"));
+             // 		 });
+             // 		 cp.$container.append($swatch);
+             // 	 }
+             //  }
 
-			 // loads a set of colors from a json to create a color palette
-			//  function getColorsCreatePalette(){
-			// 	 cp.$container.html(" ");
-			// 	 $.getJSON('/static/coloring/vendors/material/material-colors.json', function(colors){
-			// 		 var keys = Object.keys(colors);
-			// 		 for (var i = keys.length - 1; i >= 0; i--) {
-			// 			 cp.options.push(colors[keys[i]][500]);
-			// 		 }
-			// 		 createColorPalette(cp.options);
-			// 	 });
-			//  }
+             // loads a set of colors from a json to create a color palette
+             //  function getColorsCreatePalette(){
+             // 	 cp.$container.html(" ");
+             // 	 $.getJSON('/static/coloring/vendors/material/material-colors.json', function(colors){
+             // 		 var keys = Object.keys(colors);
+             // 		 for (var i = keys.length - 1; i >= 0; i--) {
+             // 			 cp.options.push(colors[keys[i]][500]);
+             // 		 }
+             // 		 createColorPalette(cp.options);
+             // 	 });
+             //  }
 
-			 // Create the main color palette circles
-			 function myCreateMainPalette(colors){
-				 for (const c of colors) {
-					 var $swatch = $("<div>").css("background-color", cp.subcolors[c][5])
-											 .addClass("swatch");
-					 $swatch.click(function(){
-						 // add color to the color palette history
-						 $(this).addClass("background-color");
-						 cp.history.push($(this).css("background-color"));
+             // Create the main color palette circles
+             function myCreateMainPalette(colors){
+                 for (const c of colors) {
+                     var $swatch = $("<div>").css("background-color", cp.subcolors[c][5])
+                                             .addClass("swatch");
+                     $swatch.click(function(){
+                         // add color to the color palette history
+                         $(this).addClass("background-color");
+                         cp.history.push($(this).css("background-color"));
                          $(".swatch").removeClass("selected-color");
                          $(this).addClass("selected-color");
-						 // Create the sub color palette circles
-						 myCreateSubPalette(c);
-						 mode = "color";
+                         // Create the sub color palette circles
+                         myCreateSubPalette(c);
+                         mode = "color";
                          $(".feature-button").removeClass("selected-button")
-					 });
-					 cp.$container.append($swatch);
-				 }
-			 }
-			 // Create the sub color palette circles
-			 function myCreateSubPalette(color){
-				 cp.$subContainer.html(" ");
-				 for (const s of cp.subcolors[color]) {
-					 var $swatch = $("<div>").css("background-color", s)
-											 .addClass("sub-swatch");
-					 $swatch.click(function(){
-						 // add color to the color palette history
-						 cp.history.push($(this).css("background-color"));
+                     });
+                     cp.$container.append($swatch);
+                 }
+             }
+             // Create the sub color palette circles
+             function myCreateSubPalette(color){
+                 cp.$subContainer.html(" ");
+                 for (const s of cp.subcolors[color]) {
+                     var $swatch = $("<div>").css("background-color", s)
+                                             .addClass("sub-swatch");
+                     $swatch.click(function(){
+                         // add color to the color palette history
+                         cp.history.push($(this).css("background-color"));
                          $(".sub-swatch").removeClass("selected-subcolor");
                          $(this).addClass("selected-subcolor");
                          mode = "color";
-                         $(".feature-button").removeClass("selected-button")
-					 });
-					 cp.$subContainer.append($swatch);
-				 }
-			 }
-			 // loads subcolors from color palette
-			 function myGetColorsFromJSON(){
-				 cp.$container.html(" ");
-				 $.getJSON('/static/coloring/vendors/material/material-colors.json', function(colors){
-					 var keys = Object.keys(colors);
-					 for (const c of cp.options) {
-						 cp.subcolors[c] = Object.values(colors[c]);
-					 }
-					 myCreateMainPalette(cp.options);
-				 });
-			 }
+                         $(".feature-button").removeClass("selected-button");
+                     });
+                     cp.$subContainer.append($swatch);
+                 }
+             }
+             // loads subcolors from color palette
+             function myGetColorsFromJSON(){
+                 cp.$container.html(" ");
+                 $.getJSON('/static/coloring/vendors/material/material-colors.json', function(colors){
+                     var keys = Object.keys(colors);
+                     for (const c of cp.options) {
+                         cp.subcolors[c] = Object.values(colors[c]);
+                     }
+                     myCreateMainPalette(cp.options);
+                 });
+             }
 
-			// building paint brush, not yet finished
-			 $('#brush').on('click', () => {
-				 $('#brush').toggleClass("selected-button");
+             // building paint brush, not yet finished
+             $('#brush').on('click', () => {
                  mode = "brush";
 
-				 // if ($('#brush').hasClass("selected-button")) {
+                 // if ($('#brush').hasClass("selected-button")) {
                  // 					$(document).mousedown(function(e) {
                  // 					// $('#canvas').css({
                  // 					// top: e.pageY - 100,
@@ -321,58 +327,72 @@
                  // 					$('body').append(newdot);
                  //            		})
                  // 				 }
-			
-
-    		}); 
 
 
-		
+             });
+
+             // unselect other buttons when press button
+             $(".feature-button").click(function () {
+                 var isSelected = $(this).hasClass("selected-button");
+                 if (isSelected) {
+                     $(".feature-button").removeClass("selected-button");
+                     $(this).removeClass("selected-button");
+                 } else {
+                     $(".feature-button").removeClass("selected-button");
+                     $(this).addClass("selected-button");
+                 }
+             });
+
              $("#color-picker").click(function () {
                  if (mode == "picker") {
                      mode == "color";
                  } else {
                      mode = "picker";
                  }
-                 $(this).toggleClass("selected-button");
              });
 
-			 function init(custom){
+             $("#last-color").click(function () {
+                 cp.history.push(cp.colorHistory[cp.colorHistory.length - 2]);
+                 setTimeout(function() { $("#last-color").removeClass("selected-button"); }, 100);
+             });
+             function init(custom){
 
-		
-				 paper.setup(canvas);
-				 myGetColorsFromJSON();
 
-				 paper.project.importSVG(mandala.filePath, function(item) {
-					 mandala.item = item._children["design-freepik"];
-					 paper.project.insertLayer(0,mandala.item);
+                 paper.setup(canvas);
+                 myGetColorsFromJSON();
 
-					 if (custom) {
-						 myCustomInteraction();
-					 } else {
-						 myGradientInteraction();
-					 }
+                 paper.project.importSVG(mandala.filePath, function(item) {
+                     mandala.item = item._children["design-freepik"];
+                     paper.project.insertLayer(0,mandala.item);
 
-				 });
-				 
-			 }
+                     if (custom) {
+                         myCustomInteraction();
+                     } else {
+                         myGradientInteraction();
+                     }
 
-			 // Set up the mandala interactivity.
-			 init(true);
-		 }
-		</script>
-	</head>
-	<body>
-		<br>
-		<canvas id="myCanvas" width="750px" height="750px"></canvas>
+                 });
+
+             }
+
+             // Set up the mandala interactivity.
+             init(true);
+         }
+        </script>
+    </head>
+    <body>
+        <br>
+        <canvas id="myCanvas" width="750px" height="750px"></canvas>
         <div id="grid">
-		<div id="color-palette"></div>
-		<div id="sub-color-palette"></div>
-	</body>
+            <div id="color-palette"></div>
+            <div id="sub-color-palette"></div>
+    </body>
         </div>
         <div id="side">
             <img id = "eraser" src="{% static 'img/eraser.png' %}" class="feature-button" alt="">
             <img id="color-picker" class="feature-button" src="{% static 'img/color-picker.svg' %}">
-			<img id="brush" class="feature-button" src="{% static 'img/brush.png' %}">
+            <img id="brush" class="feature-button" src="{% static 'img/brush.png' %}">
+            <img id="last-color" class="feature-button" src="{% static 'img/arrow-left.svg' %}">
         </div>
     </body>
 </html>
