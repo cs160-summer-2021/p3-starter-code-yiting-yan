@@ -67,6 +67,26 @@
 		.eraser-select{
 			background-color: grey;
 		}
+
+		/* .box {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            position: absolute;
+            top: 100px;
+            left: 100px;
+            border-radius: 25px;
+            border: solid 3px #ccc;
+        } */
+        .dot {
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            position: absolute;
+            border-radius: 5px;
+            
+        }
+
 		</style>
 
 		<script type="text/javascript" canvas="canvas">
@@ -113,12 +133,12 @@
                			 $('#eraser').toggleClass("eraser-select")
            		 })
 
+				
 				 tool.onMouseDown = function (event) {
 					 var hit = mandala.item.hitTest(event.point, { tolerance: 10, fill: true });
 					 if (hit) {
 						 // Color pallette keeps track of the full history of colors, though we
 						 // only color in with the most-recent color.
-		
 						var eraserSelected = $('#eraser').hasClass("eraser-select");
 						if (eraserSelected) {
 							//if user selected eraser, color everything white. 
@@ -129,6 +149,7 @@
 						}
 					 }
 				 }
+
 			 }
 
 			 // create a color palette with the given colors
@@ -165,9 +186,11 @@
 											 .addClass("swatch");
 					 $swatch.click(function(){
 						 // add color to the color palette history
+						 $(this).addClass("background-color");
 						 cp.history.push($(this).css("background-color"));
 						 // Create the sub color palette circles
 						 myCreateSubPalette(c);
+						 
 					 });
 					 cp.$container.append($swatch);
 				 }
@@ -197,9 +220,30 @@
 				 });
 			 }
 
+			// building paint brush, not yet finished
+			//  $('#brush').on('click', () => {
+			//  $(document).mousedown(function(e) {
+			// 	// $('#canvas').css({
+			// 	// 	top: e.pageY - 25,
+			// 	// 	left: e.pageX - 25,
+			// 	// });
+			// 	var newdot = $('<div>').addClass('dot').css({
+        	// 	top: e.pageY,
+        	// 	left: e.pageX
+     		// 	});
+			// 	$('body').append(newdot);
+           	// })
+
+    		// }); 
+
+
+		
 			 function init(custom){
+
+		
 				 paper.setup(canvas);
 				 myGetColorsFromJSON();
+
 				 paper.project.importSVG(mandala.filePath, function(item) {
 					 mandala.item = item._children["design-freepik"];
 					 paper.project.insertLayer(0,mandala.item);
@@ -211,6 +255,7 @@
 					 }
 
 				 });
+				 
 			 }
 
 			 // Set up the mandala interactivity.
@@ -225,5 +270,6 @@
         <div id="grid">
 		<div id="color-palette"></div>
 		<div id="sub-color-palette"></div>
+		<!-- <button id="brush">brush</button> -->
 	</body>
 </html>
