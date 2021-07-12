@@ -47,16 +47,9 @@
 		window.onload = function() {
 			var canvas = document.getElementById('myCanvas');
 
-			// coloring page
-			var mandala = {
-				item: null,
-				lastClicked: null,
-				filePath: '/static/coloring/images/mandala-freepik.svg'
-			};
-
 			// color palette
 			var cp = {
-				history: ["#000000"], // black selected by default
+				history: [], // black selected by default
 				options: [],
 				$container: $('#color-palette')
 			};
