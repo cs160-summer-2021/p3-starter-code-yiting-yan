@@ -46,16 +46,9 @@
 		window.onload = function() {
 			var canvas = document.getElementById('myCanvas');
 
-			// coloring page
-			var mandala = {
-				item: null,
-				lastClicked: null,
-				filePath: '/static/coloring/images/mandala-freepik.svg'
-			};
-
 			// color palette
 			var cp = {
-				history: ["#000000"], // black selected by default
+				history: [], // black selected by default
 				options: [],
 				$container: $('#color-palette')
 			}
@@ -139,7 +132,7 @@
                     <!-- next button -->
                     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> <br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-                   <a href="demo"><img id="next" src="{% static 'img/next.png' %}" style="max-width: 10%"></a> 
+                   <a href="new_interaction"><img id="next" src="{% static 'img/next.png' %}" style="max-width: 10%"></a> 
                    
                     
 				</div>

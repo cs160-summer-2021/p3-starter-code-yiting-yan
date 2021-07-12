@@ -46,12 +46,18 @@
 			 border-radius: 12px;
 			 margin: 3px;
 		 }
+		 .tool{
+			image-orientation: flip;
+		 }
+
 		 #myCanvas {
 			 padding-left: 0;
 			 padding-right: 0;
 			 margin-left: auto;
 			 margin-right: auto;
 			 display: block;
+		
+		
 		 }
 		</style>
 
@@ -184,6 +190,9 @@
 		</script>
 	</head>
 	<body>
+		<br><br><br><br><br>
+		<img src="{% static 'img/eraser.png' %}" style="inline-size: 5%;" alt="">
+		<img src="{% static 'img/zoom.png' %}" style="inline-size: 5%;" alt="">
 		<canvas id="myCanvas" width="750px" height="750px"></canvas>
 		<div id="color-palette"></div>
 		<div id="sub-color-palette"></div>
