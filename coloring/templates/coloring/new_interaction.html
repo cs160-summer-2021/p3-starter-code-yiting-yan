@@ -6,28 +6,33 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>P3 Coloring</title>
 
+	  <!-- credit to https://github.com/js-cookie/js-cookie for the js cookie api for handling cookies -->
+	<script type="text/javascript" src="{% static 'coloring/vendors/jquery/js.cookie.min.js' %}"></script>
 		<script type="text/javascript" src="{% static 'coloring/vendors/jquery/jquery-3.3.1.min.js' %}"></script>
 		<script type="text/javascript" src="{% static 'coloring/vendors/paper/paper-full.min.js' %}"></script>
 
 		<style type="text/css">
+         #grid {
+             display: flex;
+             justify-content: center;
+         }
 		 #color-palette {
-			 width: 300px;
 			 background-color: #f1f1f1;
 			 display: flex;
 			 flex-wrap: wrap;
 			 position: absolute;
 			 top: 0;
-			 left: calc(50% - 200px);
+			 /* left: calc(50% - 200px); */
 		 }
 
 		 #sub-color-palette {
-			 width: 500px;
+			 /* min-width: 500px; */
 			 background-color: #f1f1f1;
 			 display: flex;
 			 flex-wrap: wrap;
 			 position: absolute;
 			 top: 56px;
-			 left: calc(50% - 200px);
+			 /* left: calc(50% - 200px); */
 		 }
 		 .swatch {
 			 width: 50px;
@@ -39,11 +44,11 @@
 		 }
 
 		 .sub-swatch {
-			 width: 24px;
-			 height: 24px;
-			 -moz-border-radius: 12px;
-			 -webkit-border-radius: 12px;
-			 border-radius: 12px;
+			 width: 30px;
+			 height: 30px;
+			 -moz-border-radius: 25px;
+			 -webkit-border-radius: 25px;
+			 border-radius: 25px;
 			 margin: 3px;
 		 }
 		 .tool{
@@ -89,6 +94,15 @@
 				 $container: $('#color-palette'),
 				 $subContainer: $('#sub-color-palette')
 			 }
+             // read cookie data to get colors
+             // cp.options = Cookies.get('userPalettes').concat(",").split("),");
+             // for (var i = 0; i < cp.options.length - 1; i++) {
+             //     cp.options[i] = cp.options[i].concat(")");
+             // }
+             // cp.options.pop();
+             // console.log(cp.options);
+             cp.options = Cookies.get('userPalettes').split(",");
+             console.log(cp.options);
 			 function myCustomInteraction() {
 				 var tool = new paper.Tool();
 
@@ -194,7 +208,9 @@
 		<img src="{% static 'img/eraser.png' %}" style="inline-size: 5%;" alt="">
 		<img src="{% static 'img/zoom.png' %}" style="inline-size: 5%;" alt="">
 		<canvas id="myCanvas" width="750px" height="750px"></canvas>
+        <div id="grid">
 		<div id="color-palette"></div>
 		<div id="sub-color-palette"></div>
+        </div>
 	</body>
 </html>

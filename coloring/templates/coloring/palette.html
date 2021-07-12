@@ -7,7 +7,8 @@
   	<title>P3 Coloring</title>
       <link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}" />
 
-
+	  <!-- credit to https://github.com/js-cookie/js-cookie for the js cookie api for handling cookies -->
+	<script type="text/javascript" src="{% static 'coloring/vendors/jquery/js.cookie.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'coloring/vendors/jquery/jquery-3.3.1.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'coloring/vendors/paper/paper-full.min.js' %}"></script>
 
@@ -51,7 +52,9 @@
 				history: [], // black selected by default
 				options: [],
 				$container: $('#color-palette')
-			}
+			};
+			var RGBToName = {};
+			var userPalettes = [];
 
 			function myCustomInteraction() {
 				var tool = new paper.Tool();
@@ -65,18 +68,38 @@
 				    }
 				}
 			}
+			function hexToRGB(st) {
+				st = st.substring(1);
+				let rgb = [st.substring(0,2), st.substring(2,4), st.substring(4,6)];
+				rgb = rgb.map(function(e) {
+					let dx = parseInt(e,16);
+					return dx;
+				});
+				return "rgb(" + rgb[0] + ", "  + rgb[1] + ", " + rgb[2] + ")";
 
+			}
 			// create a color palette with the given colors
 			function createColorPalette(colors){
 
 				// create a swatch for each color
 				for (var i = colors.length - 1; i >= 0; i--) {
 					var $swatch = $("<div>").css("background-color", colors[i])
-									   .addClass("swatch");
+											.addClass("swatch");
 					$swatch.click(function(){
 						// add color to the color palette history
-					  	cp.history.push($(this).css("background-color"));
-						$(this).addClass("border")
+						let thisColor = $(this).css("background-color");
+						let thisColorName = RGBToName[thisColor];
+						console.log(thisColorName);
+						cp.history.push(thisColor);
+						$(this).toggleClass("border");
+						// add color if not chosen; remove if already chosen
+						if (userPalettes.indexOf(thisColorName) == -1) {
+							userPalettes.push(thisColorName);
+						} else {
+							userPalettes.splice(userPalettes.indexOf(thisColorName), 1);
+						}
+						Cookies.set('userPalettes', userPalettes, { SameSite: 'Lax' });
+						console.log(Cookies.get('userPalettes'));
 					});
 					cp.$container.append($swatch);
 				}
@@ -89,8 +112,10 @@
 					var keys = Object.keys(colors);
 					for (var i = keys.length - 1; i >= 0; i--) {
 						cp.options.push(colors[keys[i]][500]);
+						RGBToName[hexToRGB(colors[keys[i]][500])] = keys[i];
 					}
 					createColorPalette(cp.options);
+					console.log(RGBToName);
 				});
 			}
 
@@ -132,7 +157,11 @@
                     <!-- next button -->
                     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> <br><br><br><br><br><br><br><br><br><br><br><br><br>
 
+<<<<<<< HEAD
                    <a href="new_interaction"><img id="next" src="{% static 'img/next.png' %}" style="max-width: 10%"></a> 
+=======
+                   <a href="new_interaction"><img id="next" src="{% static 'img/next.png' %}" style="max-width: 10%"></a>
+>>>>>>> 67810ef9042f808c5cfc27d3651fe43077fcc971
                    
                     
 				</div>
