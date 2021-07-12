@@ -173,7 +173,13 @@
 				 var tool = new paper.Tool();
 
 				 $('#eraser').on('click', () => {
-               			 $('#eraser').toggleClass("eraser-select")
+               	 // $('#eraser').toggleClass("eraser-select")
+               	 $('#eraser').toggleClass("selected-button");
+                     if (mode == "eraser") {
+                         mode = "color";
+                     } else {
+                         mode = "eraser";
+                     }
            		 })
 
 				
@@ -182,7 +188,8 @@
 					 if (hit) {
 						 // Color pallette keeps track of the full history of colors, though we
 						 // only color in with the most-recent color.
-                         var eraserSelected = $('#eraser').hasClass("eraser-select");
+                         // var eraserSelected = $('#eraser').hasClass("eraser-select");
+                         var eraserSelected = $('#eraser').hasClass("selected-button");
                          if (mode == "color") {
 						     hit.item.fillColor = cp.history[cp.history.length - 1];
                          } else if (mode == "picker") {
@@ -238,7 +245,8 @@
                          $(this).addClass("selected-color");
 						 // Create the sub color palette circles
 						 myCreateSubPalette(c);
-						 
+						 mode = "color";
+                         $(".feature-button").removeClass("selected-button")
 					 });
 					 cp.$container.append($swatch);
 				 }
@@ -254,6 +262,8 @@
 						 cp.history.push($(this).css("background-color"));
                          $(".sub-swatch").removeClass("selected-subcolor");
                          $(this).addClass("selected-subcolor");
+                         mode = "color";
+                         $(".feature-button").removeClass("selected-button")
 					 });
 					 cp.$subContainer.append($swatch);
 				 }
@@ -332,7 +342,7 @@
 	</body>
         </div>
         <div id="side">
-            <img id = "eraser" src="{% static 'img/eraser.png' %}" style="inline-size: 5%;" alt="">
+            <img id = "eraser" src="{% static 'img/eraser.png' %}" class="feature-button" alt="">
             <img id="color-picker" class="feature-button" src="{% static 'img/color-picker.svg' %}">
         </div>
     </body>
