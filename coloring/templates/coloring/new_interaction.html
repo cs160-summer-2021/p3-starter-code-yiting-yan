@@ -201,6 +201,17 @@
                          var myCircle = new paper.Path.Circle({center: e.middlePoint, radius: 10});
                          myCircle.fillColor = cp.history[cp.history.length - 1];
                          myCircle.strokeColor = cp.history[cp.history.length - 1];
+                         myCircle.bringToFront();
+                     } else if ($("#eraser").hasClass("selected-button")) {
+                         // var hit = paper.project.hitTest(e.point, { tolerance: 10});
+                         // hit.item.remove();
+                     } else if (mode == "color") {
+                         var hit = mandala.item.hitTest(e.point, { tolerance: 10, fill: true });
+                         hit.item.fillColor = cp.history[cp.history.length - 1];
+
+                         if (cp.colorHistory[cp.colorHistory.length-1] != cp.history[cp.history.length-1]) {
+                             cp.colorHistory.push(cp.history[cp.history.length - 1]);
+                         }
                      }
                  }
                  tool.onMouseDown = function (event) {
