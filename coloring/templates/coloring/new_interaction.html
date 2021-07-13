@@ -12,6 +12,9 @@
         <script type="text/javascript" src="{% static 'coloring/vendors/paper/paper-full.min.js' %}"></script>
 
         <style type="text/css">
+         body {
+             background-color: #F7F7F7;
+         }
          #grid {
              display: flex;
              justify-content: center;
@@ -24,6 +27,8 @@
              position: absolute;
              top: -4px;
              /* left: calc(50% - 200px); */
+             /* border: 3px solid #DDDDDD;
+                border-radius: 9px; */
          }
 
          #sub-color-palette {
@@ -32,8 +37,9 @@
              display: flex;
              flex-wrap: wrap;
              position: absolute;
-             top: 59.5px;
+             top: 57px;
              /* left: calc(50% - 200px); */
+             border: 3px solid #DDDDDD;
          }
          .swatch {
              width: 45px;
@@ -43,6 +49,17 @@
              border-radius: 25px;
              margin: 10px;
          }
+         .swatch:hover::after{
+             position: absolute;
+             content: " ";
+             width: 60px;
+             height: 60px;
+             margin-top: -7.5px;
+             margin-left: -7.5px;
+             background: #E9E9E9;
+             z-index: -1;
+             border-radius: 5px;
+         }
          .selected-color::after {
              position: absolute;
              content: " ";
@@ -50,7 +67,18 @@
              height: 60px;
              margin-top: -7.5px;
              margin-left: -7.5px;
-             background: #E1E1E1;
+             background: #DEDEDE !important;
+             z-index: -1;
+             border-radius: 5px 5px 0 0;
+         }
+         .sub-swatch:hover::after{
+             position: absolute;
+             content: " ";
+             width: 40px;
+             height: 40px;
+             margin-top: -5px;
+             margin-left: -5px;
+             background: #E9E9E9;
              z-index: -1;
              border-radius: 5px;
          }
@@ -61,6 +89,7 @@
              -webkit-border-radius: 25px;
              border-radius: 25px;
              margin: 5px;
+             border: 0.5px solid #777777;
          }
          .selected-subcolor::after {
              position: absolute;
@@ -69,12 +98,12 @@
              height: 40px;
              margin-top: -5px;
              margin-left: -5px;
-             background: #E1E1E1;
+             background: #E1E1E1 !important;
              z-index: -1;
              border-radius: 5px;
          }
          .selected-button {
-             background: lightgrey !important;
+             background: #F5F5F5 !important;
              border-radius: 9px;
          }
          .feature-button:hover {
@@ -82,28 +111,38 @@
              border-radius: 9px;
          }
          .feature-button {
-             width: 30px;
+             width: 50px;
              padding: 5px;
          }
          #side {
              position: fixed;
-             width: 50px;
+             width: 65px;
              left: 10px;
-             top: 100px;
+             top: calc(50% - 250px);
+             border: 3px solid #DDDDDD;
+             background-color: #DDDDDD;
+             border-radius: 9px;
+             padding-left: 5px;
+             padding-top: 7px;
          }
          .tool{
              image-orientation: flip;
          }
 
          #myCanvas {
-             padding-left: 0;
-             padding-right: 0;
              margin-left: auto;
              margin-right: auto;
              display: block;
-             margin-top: 120px;
+             /* border: 10px solid  #EFEFEF; */
          }
-
+         #canvasWrapper {
+             border: 10px solid #ECECEC;
+             margin-top: 90px !important;
+             margin: auto;
+             width: 750px;
+             height: 750px;
+             border-radius: 3px;
+         }
          .eraser-select{
              background: lightgray;
              border-radius: 9px;
@@ -139,6 +178,7 @@
                  item: null,
                  lastClicked: null,
                  filePath: '/static/coloring/images/mandala-freepik.svg',
+                 // filePath: '/static/coloring/images/mandala-freepik.svg',
              };
 
              // color palette
@@ -184,7 +224,15 @@
                      } else {
                          mode = "eraser";
                      }
-                 })
+                 });
+
+                 var bg = new paper.Path.Rectangle({
+                     point: [0,0],
+                     size: [paper.view.size.width, paper.view.size.height],
+                     radius: new paper.Size(2,2)
+                 });
+                 bg.sendToBack();
+                 bg.fillColor = '#E1E1E1';
 
                  var aPath;
                  function onMouseDown(e) {
@@ -222,6 +270,7 @@
                  }
                  tool.onMouseDown = function (event) {
                      var hit = mandala.item.hitTest(event.point, { tolerance: 10, fill: true });
+                     var hit2 = paper.project.hitTest(event.point, { tolerance: 10, fill: true });
                      if (hit) {
                          // Color pallette keeps track of the full history of colors, though we
                          // only color in with the most-recent color.
@@ -230,7 +279,6 @@
                          var brushSelected = $('#brush').hasClass("selected-button");
                          if (mode == "color") {
                              hit.item.fillColor = cp.history[cp.history.length - 1];
-
                              if (cp.colorHistory[cp.colorHistory.length-1] != cp.history[cp.history.length-1]) {
                                  cp.colorHistory.push(cp.history[cp.history.length - 1]);
                              }
@@ -243,6 +291,29 @@
                              $("#color-picker").removeClass("selected-button");
                          } else if (eraserSelected) {
                              hit.item.fillColor = "#FFFFFF";
+                         } else if (brushSelected) {
+                             // cp.history.push(hit.item.fillColor);
+                             // console.log(hit.item.fillColor);
+                             // mode = "color";
+                             // $("#color-picker").removeClass("selected-button");
+                         }
+                     } else if (hit2) {
+                         var eraserSelected = $('#eraser').hasClass("selected-button");
+                         var brushSelected = $('#brush').hasClass("selected-button");
+                         if (mode == "color") {
+                             hit2.item.fillColor = cp.history[cp.history.length - 1];
+                             if (cp.colorHistory[cp.colorHistory.length-1] != cp.history[cp.history.length-1]) {
+                                 cp.colorHistory.push(cp.history[cp.history.length - 1]);
+                             }
+                             console.log(cp.colorHistory);
+                         } else if (mode == "picker") {
+                             cp.history.push(hit2.item.fillColor);
+                             // console.log(hit.item.fillColor._canvasStyle);
+                             mode = "color";
+                             findAndSwitchColor(hit2.item.fillColor._canvasStyle);
+                             $("#color-picker").removeClass("selected-button");
+                         } else if (eraserSelected) {
+                             hit2.item.fillColor = "#E1E1E1";
                          } else if (brushSelected) {
                              // cp.history.push(hit.item.fillColor);
                              // console.log(hit.item.fillColor);
@@ -299,6 +370,7 @@
                      });
                      cp.$container.append($swatch);
                  }
+             $(".swatch:first-of-type").trigger("click");
              }
              // Create the sub color palette circles
              function myCreateSubPalette(color){
@@ -427,7 +499,6 @@
                  });
 
              }
-
              // Set up the mandala interactivity.
              init(true);
          }
@@ -435,7 +506,8 @@
     </head>
     <body>
         <br>
-        <canvas id="myCanvas" width="750px" height="750px"></canvas>
+        <div id="canvasWrapper">
+            <canvas id="myCanvas" width="750px" height="750px"></canvas></div>
         <div id="grid">
             <div id="color-palette"></div>
             <div id="sub-color-palette"></div>
@@ -445,6 +517,7 @@
             <img id = "eraser" src="{% static 'img/eraser.png' %}" class="feature-button" alt="">
             <img id="color-picker" class="feature-button" src="{% static 'img/color-picker.svg' %}">
             <img id="brush" class="feature-button" src="{% static 'img/brush.png' %}">
+            <img id="last-color" class="feature-button" src="{% static 'img/arrow-left.svg' %}">
             <img id="last-color" class="feature-button" src="{% static 'img/arrow-left.svg' %}">
         </div>
     </body>
