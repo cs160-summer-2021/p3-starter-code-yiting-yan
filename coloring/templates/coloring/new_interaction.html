@@ -195,9 +195,9 @@
              // subcolors is a dictionary, the keys are main colors like red, blue, etc.
              // the values are lists of subcolors for that colors
              var cp = {
-                 history: ["#000000"], // black selected by default
+                 history: ["#FFFFFF", "#000000"], // black selected by default
                  colorHistory: ["#000000"], // black selected by default
-                 subHistory: ["#000000"],
+                 subHistory: ["#FFFFFF", "#000000"],
                  options: ["red", "green", "purple"],
                  subcolors: {},
                  $container: $('#color-palette'),
@@ -282,6 +282,28 @@
                          };
                      }
                  }
+                 // buggy texture feature
+                 // using pattern with paper js not officially supported
+                 // work around credit to https://github.com/paperjs/paper.js/issues/829
+                 function makeTexture(shape, color) {
+                     var canvs = document.createElement('canvas');
+                     canvs.width = shape.bounds.width;
+                     canvs.height = shape.bounds.height;
+                     var context = canvs.getContext('2d');
+                     var img = new Image();
+                     img.src = '/static/img/diagonal-lines.svg';
+                     img.onload = function() {
+                         context.fillStyle = context.createPattern(this,"repeat");
+                         context.fillRect(0, 0, shape.bounds.width, shape.bounds.height);
+                         context.fill();
+                     };
+                     var raster = new paper.Raster(canvs,new paper.Point(shape.bounds.x,shape.bounds.y));
+                     raster.fitBounds(shape.bounds, true);
+                     raster.fillColor = color;
+                     scene2DFloorShape = new paper.Group([shape,raster]);
+                     scene2DFloorShape.clipped = true;
+                     // raster.addChild(scene2DFloorShape);
+                 }
                  tool.onMouseDown = function (event) {
                      var hit = mandala.item.hitTest(event.point, { tolerance: 10, fill: true });
                      var hit2 = paper.project.hitTest(event.point, { tolerance: 10, fill: true });
@@ -319,6 +341,9 @@
                                  origin: hit.item.bounds.leftCenter,
                                  destination: hit.item.bounds.rightCenter
                              };
+                         } else if (mode == "texture") {
+                             hit.item.fillColor = cp.history[cp.history.length - 1];
+                             setTimeout(function () {makeTexture(hit.item.clone(), cp.history[cp.history.length - 1]);}, 300);
                          }
                      } else if (hit2) {
                          var eraserSelected = $('#eraser').hasClass("selected-button");
@@ -515,6 +540,13 @@
                      mode = "gradient";
                  }
              });
+             $("#texture").click(function () {
+                 if (mode == "texture") {
+                     mode == "color";
+                 } else {
+                     mode = "texture";
+                 }
+             });
              $("#last-color").click(function () {
                  if (cp.colorHistory.length >= 2) {
                      cp.history.push(cp.colorHistory[cp.colorHistory.length - 2]);
@@ -561,6 +593,7 @@
             <img id="brush" class="feature-button" src="{% static 'img/brush.png' %}">
             <img id="last-color" class="feature-button" src="{% static 'img/arrow-left.svg' %}">
             <img id="gradient" class="feature-button" src="{% static 'img/gradient.svg' %}">
+            <!-- <img id="texture" class="feature-button" src="{% static 'img/texture.svg' %}"> -->
         </div>
     </body>
 </html>
