@@ -59,23 +59,19 @@
 			background-image: url("/static/img/palette-bg.jpg");
 		 }
 
-		 .examples {
-			background-color: white;
-			height: 500px;
-			width: 500px;
-			overflow-y: scroll;
-		}
 
 		#example-pos {
+			background-color: white;
+			overflow-y: scroll;
              position: fixed;
              width: 250px;
              left: 100px;
+			 height: 500px;
              top: 190px;
+			 border-radius: 30px;
          }
 
-		 .example-style {
-             width: 3000px;
-         }
+	
 
 
 	</style>
@@ -198,6 +194,7 @@
 				   <div id="logo">
 					<img class="logo-style" src="{% static 'img/logo.png' %}">
 				   </div>
+				   <!-- // example creations -->
                    <div class="examples" id="example-pos">
 					 	<center><h4>Scroll to see some creations!</h4></center> 
 					   <img class="logo-style" src="{% static 'img/ex1.png' %}" alt="">
