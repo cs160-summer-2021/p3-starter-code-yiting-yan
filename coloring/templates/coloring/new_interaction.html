@@ -213,14 +213,16 @@
                          var brushSelected = $('#brush').hasClass("selected-button");
                          if (mode == "color") {
                              hit.item.fillColor = cp.history[cp.history.length - 1];
+
                              if (cp.colorHistory[cp.colorHistory.length-1] != cp.history[cp.history.length-1]) {
                                  cp.colorHistory.push(cp.history[cp.history.length - 1]);
                              }
                              console.log(cp.colorHistory);
                          } else if (mode == "picker") {
                              cp.history.push(hit.item.fillColor);
-                             console.log(hit.item.fillColor);
+                             // console.log(hit.item.fillColor._canvasStyle);
                              mode = "color";
+                             findAndSwitchColor(hit.item.fillColor._canvasStyle);
                              $("#color-picker").removeClass("selected-button");
                          } else if (eraserSelected) {
                              hit.item.fillColor = "#FFFFFF";
@@ -310,6 +312,39 @@
                  });
              }
 
+			function hexToRGB(st) {
+				st = st.substring(1);
+				let rgb = [st.substring(0,2), st.substring(2,4), st.substring(4,6)];
+				rgb = rgb.map(function(e) {
+					let dx = parseInt(e,16);
+					return dx;
+				});
+				return "rgb(" + rgb[0] + ", "  + rgb[1] + ", " + rgb[2] + ")";
+
+			}
+             function findAndSwitchColor(c) {
+                 c = c.replace(/\s+/g, '');
+                 for (o of cp.options) {
+                     for (s of cp.subcolors[o]) {
+                         if (c == hexToRGB(s).replace(/\s+/g, '')) {
+                             $(".swatch").each(function (i, obj) {
+                                 console.log($(obj).css("background-color") );
+                                 if ($(obj).css("background-color") == hexToRGB(cp.subcolors[o][5])) {
+                                     $(obj).trigger("click");
+                                     return false;
+                                 }
+                             });
+                             $(".sub-swatch").each(function (i, obj) {
+                                 if($(obj).css("background-color").replace(/\s+/g, '') == c) {
+                                     $(obj).trigger("click");
+                                     return false;
+                                 }
+                             });
+                             return;
+                         }
+                     }
+                 }
+             }
              // building paint brush, not yet finished
              $('#brush').on('click', () => {
                  mode = "brush";
@@ -353,7 +388,8 @@
 
              $("#last-color").click(function () {
                  cp.history.push(cp.colorHistory[cp.colorHistory.length - 2]);
-                 setTimeout(function() { $("#last-color").removeClass("selected-button"); }, 100);
+                 findAndSwitchColor(cp.colorHistory[cp.colorHistory.length - 2]);
+                 setTimeout(function() {$("#last-color").removeClass("selected-button"); }, 100);
              });
              function init(custom){
 
