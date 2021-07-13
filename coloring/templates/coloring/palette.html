@@ -6,7 +6,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   	<title>P3 Coloring</title>
       <link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}" />
-
 	  <!-- credit to https://github.com/js-cookie/js-cookie for the js cookie api for handling cookies -->
 	<script type="text/javascript" src="{% static 'coloring/vendors/jquery/js.cookie.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'coloring/vendors/jquery/jquery-3.3.1.min.js' %}"></script>
@@ -23,7 +22,7 @@
 		}
 		#color-palette {
             padding-top: 10rem;
-            padding-left: 5rem;
+            padding-left: 3.3rem;
 			width: 800px;
             height: 500px;
 			display: flex;
@@ -40,6 +39,42 @@
 			 border-radius: 40px;
 			 margin: 30px;
 		}
+
+		#logo {
+             position: fixed;
+             width: 50px;
+             left: 100px;
+             top: 10px;
+         }
+
+	
+
+		 .logo-style {
+             width: 230px;
+             padding: 5px;
+         }
+
+		 body{
+			background-image: url("/static/img/palette-bg.jpg");
+		 }
+
+
+		#example-pos {
+			background-color: none;
+			overflow-y: scroll;
+            position: fixed;
+            width: 250px;
+            left: 100px;
+			height: 500px;
+            top: 190px;
+			border-radius: 30px;
+         }
+
+	 .myBorder {
+		 border: 3px solid #000;
+		 border-radius: 50px;
+	 }
+
 
 	</style>
 
@@ -91,7 +126,7 @@
 						let thisColorName = RGBToName[thisColor];
 						console.log(thisColorName);
 						cp.history.push(thisColor);
-						$(this).toggleClass("border");
+						$(this).toggleClass("myBorder");
 						// add color if not chosen; remove if already chosen
 						if (userPalettes.indexOf(thisColorName) == -1) {
 							userPalettes.push(thisColorName);
@@ -158,11 +193,20 @@
                     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br> <br><br><br><br><br><br><br><br><br><br><br><br><br>
 
                    <a href="new_interaction"><img id="next" src="{% static 'img/next.png' %}" style="max-width: 10%"></a>
-                   
+				   <div id="logo">
+					<img class="logo-style" src="{% static 'img/logo.png' %}">
+				   </div>
+				   <!-- // example creations -->
+                   <div class="examples" id="example-pos">
+					 	<center><h4>Scroll to see some creations!</h4></center> 
+					   <img class="logo-style" src="{% static 'img/ex1.png' %}" alt="">
+					   <img class="logo-style" src="{% static 'img/ex3.png' %}" alt="">
+					   <img class="logo-style" src="{% static 'img/ex2.png' %}" alt="">					</div>
                     
 				</div>
 			</div>
 		</div>
+		
 
 	</div>
 </body>

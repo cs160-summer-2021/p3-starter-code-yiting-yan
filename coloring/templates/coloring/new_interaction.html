@@ -102,6 +102,23 @@
              z-index: -1;
              /* border-radius: 5px; */
          }
+
+		 .logo-style {
+             width: 200px;
+             padding: 0px;
+         }
+
+		 #share {
+            position: fixed;
+            right: 100px;
+            top: 5px;
+         }
+
+		 .share-button {
+             width: 20px;
+			 padding-right: 8px;
+         }
+
          .selected-button {
              background: #F5F5F5 !important;
              border-radius: 9px;
@@ -118,7 +135,7 @@
              position: fixed;
              width: 71px;
              left: 10px;
-             top: calc(50% - 250px);
+             top: calc(50% - 300px);
              border: 3px solid #DDDDDD;
              background-color: #DDDDDD;
              border-radius: 4px;
@@ -161,14 +178,42 @@
             border-radius: 25px;
             border: solid 3px #ccc;
             } */
-         .dot {
-             width: 10px;
-             height: 10px;
-             background-color: red;
-             position: absolute;
-             border-radius: 5px;
+         
 
-         }
+		 body{
+			background-image: url("/static/img/palette-bg.jpg");
+		 }
+
+		 .dropdown {
+			position: relative;
+			display: inline-block;
+			}
+					
+		.dropdown-big {
+			color: white;
+			background-color: #4070ca;
+			padding: 15px;
+			font-size: 15px;
+			}
+
+		/* follow W3School Dropdown guide and borrow the background color*/
+		.dropdown-text {
+			display: none;
+			position: absolute;
+			background-color: #f1f1f1;
+			min-width: 160px;
+			}
+
+		.dropdown-text a {
+			color: black;
+			padding: 10px;
+			display: block;
+			}
+
+	.dropdown-text a:hover {background-color: #ddd;}
+	.dropdown:hover .dropdown-big {background-color: rgb(36, 36, 144);}
+	.dropdown:hover .dropdown-text {display: block;}
+
 
         </style>
 
@@ -282,7 +327,7 @@
                          };
                      }
                  }
-                 // buggy texture feature
+
                  // using pattern with paper js not officially supported
                  // work around credit to https://github.com/paperjs/paper.js/issues/829
                  function makeTexture(shape, color) {
@@ -422,8 +467,10 @@
                          $(this).addClass("selected-color");
                          // Create the sub color palette circles
                          myCreateSubPalette(c);
-                         mode = "color";
-                         $(".feature-button").removeClass("selected-button")
+                         if (!($("#texture").hasClass("selected-button") || $("#gradient").hasClass("selected-button"))) {
+                             $(".feature-button").removeClass("selected-button");
+                             mode = "color";
+                         }
                      });
                      cp.$container.append($swatch);
                  }
@@ -441,8 +488,10 @@
                          cp.subHistory.push($(this).css("background-color"));
                          $(".sub-swatch").removeClass("selected-subcolor");
                          $(this).addClass("selected-subcolor");
-                         mode = "color";
-                         $(".feature-button").removeClass("selected-button");
+                         if (!($("#texture").hasClass("selected-button") || $("#gradient").hasClass("selected-button"))) {
+                             $(".feature-button").removeClass("selected-button");
+                             mode = "color";
+                         }
                      });
                      cp.$subContainer.append($swatch);
                  }
@@ -527,7 +576,7 @@
 
              $("#color-picker").click(function () {
                  if (mode == "picker") {
-                     mode == "color";
+                     mode = "color";
                  } else {
                      mode = "picker";
                  }
@@ -535,14 +584,14 @@
 
              $("#gradient").click(function () {
                  if (mode == "gradient") {
-                     mode == "color";
+                     mode = "color";
                  } else {
                      mode = "gradient";
                  }
              });
              $("#texture").click(function () {
                  if (mode == "texture") {
-                     mode == "color";
+                     mode = "color";
                  } else {
                      mode = "texture";
                  }
@@ -582,9 +631,11 @@
         <br>
         <div id="canvasWrapper">
             <canvas id="myCanvas" width="750px" height="750px"></canvas></div>
+			
         <div id="grid">
             <div id="color-palette"></div>
             <div id="sub-color-palette"></div>
+			
     </body>
         </div>
         <div id="side">
@@ -595,5 +646,15 @@
             <img id="gradient" class="feature-button" src="{% static 'img/gradient.svg' %}">
             <!-- <img id="texture" class="feature-button" src="{% static 'img/texture.svg' %}"> -->
         </div>
+
+		<div class="dropdown" id="share">
+			<button class="dropdown-big">Share your work</button>
+			<div class="dropdown-text">
+			  <a href="https://www.facebook.com"><img src="{% static 'img/facebook.png' %}" alt="" class="share-button">Facebook</a>
+			  <a href="https://twitter.com"><img src="{% static 'img/twitter.png' %}" alt="" class="share-button">Twitter</a>
+			<a href="https://www.instagram.com"><img src="{% static 'img/instagram.png' %}" alt="" class="share-button">Instagram</a>
+			</div>
+		  </div>
+		
     </body>
 </html>

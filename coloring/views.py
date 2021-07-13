@@ -5,6 +5,10 @@ def index(request):
     return render(request, 'coloring/index.html')
 
 
+def demo(request):
+    return render(request, 'coloring/demo.html')
+
+
 def palette(request):
     return render(request, 'coloring/palette.html')
 
