@@ -6,7 +6,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   	<title>P3 Coloring</title>
       <link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}" />
-
 	  <!-- credit to https://github.com/js-cookie/js-cookie for the js cookie api for handling cookies -->
 	<script type="text/javascript" src="{% static 'coloring/vendors/jquery/js.cookie.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'coloring/vendors/jquery/jquery-3.3.1.min.js' %}"></script>
@@ -61,14 +60,14 @@
 
 
 		#example-pos {
-			background-color: white;
+			background-color: none;
 			overflow-y: scroll;
-             position: fixed;
-             width: 250px;
-             left: 100px;
-			 height: 500px;
-             top: 190px;
-			 border-radius: 30px;
+            position: fixed;
+            width: 250px;
+            left: 100px;
+			height: 500px;
+            top: 190px;
+			border-radius: 30px;
          }
 
 	
@@ -199,12 +198,12 @@
 					 	<center><h4>Scroll to see some creations!</h4></center> 
 					   <img class="logo-style" src="{% static 'img/ex1.png' %}" alt="">
 					   <img class="logo-style" src="{% static 'img/ex3.png' %}" alt="">
-					   <img class="logo-style" src="{% static 'img/ex2.png' %}" alt="">
-					</div>
+					   <img class="logo-style" src="{% static 'img/ex2.png' %}" alt="">					</div>
                     
 				</div>
 			</div>
 		</div>
+		
 
 	</div>
 </body>

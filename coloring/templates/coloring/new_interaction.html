@@ -108,6 +108,17 @@
              padding: 0px;
          }
 
+		 #share {
+            position: fixed;
+            right: 100px;
+            top: 5px;
+         }
+
+		 .share-button {
+             width: 20px;
+			 padding-right: 8px;
+         }
+
          .selected-button {
              background: #F5F5F5 !important;
              border-radius: 9px;
@@ -167,19 +178,42 @@
             border-radius: 25px;
             border: solid 3px #ccc;
             } */
-         .dot {
-             width: 10px;
-             height: 10px;
-             background-color: red;
-             position: absolute;
-             border-radius: 5px;
-
-         }
+         
 
 		 body{
 			background-image: url("/static/img/palette-bg.jpg");
 		 }
-		 
+
+		 .dropdown {
+			position: relative;
+			display: inline-block;
+			}
+					
+		.dropdown-big {
+			color: white;
+			background-color: #4070ca;
+			padding: 15px;
+			font-size: 15px;
+			}
+
+		/* follow W3School Dropdown guide and borrow the background color*/
+		.dropdown-text {
+			display: none;
+			position: absolute;
+			background-color: #f1f1f1;
+			min-width: 160px;
+			}
+
+		.dropdown-text a {
+			color: black;
+			padding: 10px;
+			display: block;
+			}
+
+	.dropdown-text a:hover {background-color: #ddd;}
+	.dropdown:hover .dropdown-big {background-color: rgb(36, 36, 144);}
+	.dropdown:hover .dropdown-text {display: block;}
+
 
         </style>
 
@@ -565,6 +599,7 @@
         <div id="grid">
             <div id="color-palette"></div>
             <div id="sub-color-palette"></div>
+			
     </body>
         </div>
         <div id="side">
@@ -574,5 +609,15 @@
             <img id="last-color" class="feature-button" src="{% static 'img/arrow-left.svg' %}">
             <img id="gradient" class="feature-button" src="{% static 'img/gradient.svg' %}">
         </div>
+
+		<div class="dropdown" id="share">
+			<button class="dropdown-big">Share your work</button>
+			<div class="dropdown-text">
+			  <a href="https://www.facebook.com"><img src="{% static 'img/facebook.png' %}" alt="" class="share-button">Facebook</a>
+			  <a href="https://twitter.com"><img src="{% static 'img/twitter.png' %}" alt="" class="share-button">Twitter</a>
+			<a href="https://www.instagram.com"><img src="{% static 'img/instagram.png' %}" alt="" class="share-button">Instagram</a>
+			</div>
+		  </div>
+		
     </body>
 </html>
