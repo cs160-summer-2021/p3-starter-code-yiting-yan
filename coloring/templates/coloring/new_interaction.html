@@ -138,7 +138,7 @@
              var mandala = {
                  item: null,
                  lastClicked: null,
-                 filePath: '/static/coloring/images/mandala-freepik.svg'
+                 filePath: '/static/coloring/images/mandala-freepik.svg',
              };
 
              // color palette
@@ -207,6 +207,10 @@
                          // hit.item.remove();
                          var hit = mandala.item.hitTest(e.point, { tolerance: 10, fill: true });
                          hit.item.fillColor = "#FFFFFF";
+                         var hit2 = paper.project.hitTest(e.point, { tolerance: 10, fill: true });
+                         if (hit2.item.parent._name != "design-freepik") {
+                             hit2.item.remove();
+                         }
                      } else if (mode == "color") {
                          var hit = mandala.item.hitTest(e.point, { tolerance: 10, fill: true });
                          hit.item.fillColor = cp.history[cp.history.length - 1];
