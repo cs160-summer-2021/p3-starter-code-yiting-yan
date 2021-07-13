@@ -329,7 +329,7 @@
                  }
 
                  // using pattern with paper js not officially supported
-                 // work around credit to https://github.com/paperjs/paper.js/issues/829
+                 // credit for most of this function goes to https://github.com/paperjs/paper.js/issues/829
                  // kinda buggy
                  function makeTexture(shape, color) {
                      var canvs = document.createElement('canvas');
@@ -640,6 +640,7 @@
     </body>
         </div>
         <div id="side">
+            <!-- icons from https://materialdesignicons.com/ and  https://www.iconfinder.com/ -->
             <img id = "eraser" src="{% static 'img/eraser.png' %}" class="feature-button" alt="">
             <img id="color-picker" class="feature-button" src="{% static 'img/color-picker.svg' %}">
             <img id="brush" class="feature-button" src="{% static 'img/brush.png' %}">
