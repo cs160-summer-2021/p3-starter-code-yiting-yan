@@ -205,6 +205,8 @@
                      } else if ($("#eraser").hasClass("selected-button")) {
                          // var hit = paper.project.hitTest(e.point, { tolerance: 10});
                          // hit.item.remove();
+                         var hit = mandala.item.hitTest(e.point, { tolerance: 10, fill: true });
+                         hit.item.fillColor = "#FFFFFF";
                      } else if (mode == "color") {
                          var hit = mandala.item.hitTest(e.point, { tolerance: 10, fill: true });
                          hit.item.fillColor = cp.history[cp.history.length - 1];
