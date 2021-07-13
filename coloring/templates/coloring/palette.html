@@ -70,7 +70,10 @@
 			border-radius: 30px;
          }
 
-	
+	 .myBorder {
+		 border: 3px solid #000;
+		 border-radius: 50px;
+	 }
 
 
 	</style>
@@ -123,7 +126,7 @@
 						let thisColorName = RGBToName[thisColor];
 						console.log(thisColorName);
 						cp.history.push(thisColor);
-						$(this).toggleClass("border");
+						$(this).toggleClass("myBorder");
 						// add color if not chosen; remove if already chosen
 						if (userPalettes.indexOf(thisColorName) == -1) {
 							userPalettes.push(thisColorName);
