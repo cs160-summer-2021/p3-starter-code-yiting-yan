@@ -229,14 +229,14 @@
                          mode = "eraser";
                      }
                  });
-
+                 // using rectangle for bg inspired by https://stackoverflow.com/questions/43423317/how-to-change-color-of-svg-pattern-on-usage
                  var bg = new paper.Path.Rectangle({
                      point: [0,0],
                      size: [paper.view.size.width, paper.view.size.height],
                      radius: new paper.Size(2,2)
                  });
-                 bg.sendToBack();
                  bg.fillColor = '#E1E1E1';
+                 bg.sendToBack();
 
                  var aPath;
                  function onMouseDown(e) {
@@ -516,8 +516,10 @@
                  }
              });
              $("#last-color").click(function () {
-                 cp.history.push(cp.colorHistory[cp.colorHistory.length - 2]);
-                 findAndSwitchColor(cp.colorHistory[cp.colorHistory.length - 2]);
+                 if (cp.colorHistory.length >= 2) {
+                     cp.history.push(cp.colorHistory[cp.colorHistory.length - 2]);
+                     findAndSwitchColor(cp.colorHistory[cp.colorHistory.length - 2]);
+                 }
                  setTimeout(function() {$("#last-color").removeClass("selected-button"); }, 100);
              });
              function init(custom){
