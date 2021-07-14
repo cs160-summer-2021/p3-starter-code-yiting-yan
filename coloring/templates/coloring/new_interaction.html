@@ -262,7 +262,7 @@
              // cp.options.pop();
              // console.log(cp.options);
              cp.options = Cookies.get('userPalettes').split(",");
-             console.log(cp.options);
+             // console.log(cp.options);
              function myCustomInteraction() {
                  var tool = new paper.Tool();
 
@@ -325,11 +325,16 @@
                              origin: hit.item.bounds.leftCenter,
                              destination: hit.item.bounds.rightCenter
                          };
+                     } else if (mode == "texture") {
+                         var hit = mandala.item.hitTest(e.point, { tolerance: 10, fill: true });
+                         hit.item.fillColor = cp.history[cp.history.length - 1];
+                         setTimeout(function () {makeTexture(hit.item.clone(), cp.history[cp.history.length - 1]);}, 300);
                      }
                  }
 
                  // using pattern with paper js not officially supported
-                 // work around credit to https://github.com/paperjs/paper.js/issues/829
+                 // credit for most of this function goes to https://github.com/paperjs/paper.js/issues/829
+                 // kinda buggy
                  function makeTexture(shape, color) {
                      var canvs = document.createElement('canvas');
                      canvs.width = shape.bounds.width;
@@ -363,7 +368,7 @@
                              if (cp.colorHistory[cp.colorHistory.length-1] != cp.history[cp.history.length-1]) {
                                  cp.colorHistory.push(cp.history[cp.history.length - 1]);
                              }
-                             console.log(cp.colorHistory);
+                             // console.log(cp.colorHistory);
                          } else if (mode == "picker") {
                              cp.history.push(hit.item.fillColor);
                              // console.log(hit.item.fillColor._canvasStyle);
@@ -398,7 +403,7 @@
                              if (cp.colorHistory[cp.colorHistory.length-1] != cp.history[cp.history.length-1]) {
                                  cp.colorHistory.push(cp.history[cp.history.length - 1]);
                              }
-                             console.log(cp.colorHistory);
+                             // console.log(cp.colorHistory);
                          } else if (mode == "picker") {
                              cp.history.push(hit2.item.fillColor);
                              // console.log(hit.item.fillColor._canvasStyle);
@@ -524,7 +529,7 @@
                      for (s of cp.subcolors[o]) {
                          if (c == hexToRGB(s).replace(/\s+/g, '')) {
                              $(".swatch").each(function (i, obj) {
-                                 console.log($(obj).css("background-color") );
+                                 // console.log($(obj).css("background-color") );
                                  if ($(obj).css("background-color") == hexToRGB(cp.subcolors[o][5])) {
                                      $(obj).trigger("click");
                                      return false;
@@ -639,6 +644,7 @@
     </body>
         </div>
         <div id="side">
+            <!-- icons from https://materialdesignicons.com/ and  https://www.iconfinder.com/ -->
             <img id = "eraser" src="{% static 'img/eraser.png' %}" class="feature-button" alt="">
             <img id="color-picker" class="feature-button" src="{% static 'img/color-picker.svg' %}">
             <img id="brush" class="feature-button" src="{% static 'img/brush.png' %}">
